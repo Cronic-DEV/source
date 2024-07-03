@@ -1,0 +1,114 @@
+local ScreenGui = Instance.new("ScreenGui")
+local KeyEntryFrame = Instance.new("Frame")
+local ImageLabel = Instance.new("ImageLabel")  -- Add an ImageLabel
+local TextBox = Instance.new("TextBox")
+local SubmitButton = Instance.new("TextButton")
+local MessageLabel = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+
+-- Properties
+ScreenGui.Name = "KeySystemGui"
+ScreenGui.Parent = game.CoreGui
+
+KeyEntryFrame.Name = "KeyEntryFrame"
+KeyEntryFrame.Parent = ScreenGui
+KeyEntryFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+KeyEntryFrame.Size = UDim2.new(0.2, 0, 0.35, 0)  -- Adjust size to extend the top
+KeyEntryFrame.Position = UDim2.new(0.4, 0, 0.325, 0)  -- Adjust position to center the frame
+
+UICorner.Parent = KeyEntryFrame
+UICorner.CornerRadius = UDim.new(0, 15)  -- Adjust the radius for roundness
+
+-- ImageLabel Properties
+ImageLabel.Name = "ImageLabel"
+ImageLabel.Parent = KeyEntryFrame
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Size = UDim2.new(1, 0, 0.4, 0)  -- Set size to cover the top part of the frame
+ImageLabel.Position = UDim2.new(0, 0, 0, 0)  -- Position it at the top
+ImageLabel.Image = "rbxassetid://18322374530"  -- Set the image
+
+local TextBoxCorner = Instance.new("UICorner")
+TextBoxCorner.CornerRadius = UDim.new(0, 10)
+TextBox.Name = "TextBox"
+TextBox.Parent = KeyEntryFrame
+TextBox.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+TextBox.Size = UDim2.new(0.8, 0, 0.2, 0)
+TextBox.Position = UDim2.new(0.1, 0, 0.35, 0)  -- Adjust position to be below the image
+TextBox.Text = "Enter Key"  -- Set the initial text to "Enter Key"
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Make the text white
+TextBox.TextSize = 30  -- Set the text size to 30
+TextBox.Font = Enum.Font.SourceSansBold  -- Make the text bold
+TextBoxCorner.Parent = TextBox
+
+local SubmitButtonCorner = Instance.new("UICorner")
+SubmitButtonCorner.CornerRadius = UDim.new(0, 10)
+SubmitButton.Name = "SubmitButton"
+SubmitButton.Parent = KeyEntryFrame
+SubmitButton.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
+SubmitButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+SubmitButton.Position = UDim2.new(0.1, 0, 0.6, 0)  -- Adjust position to be below the TextBox
+SubmitButton.Text = "Submit"
+SubmitButton.TextSize = 30
+SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitButton.Font = Enum.Font.SourceSansBold
+SubmitButtonCorner.Parent = SubmitButton
+
+MessageLabel.Name = "MessageLabel"
+MessageLabel.Parent = KeyEntryFrame
+MessageLabel.BackgroundTransparency = 1
+MessageLabel.Size = UDim2.new(0.8, 0, 0.1, 0)
+MessageLabel.Position = UDim2.new(0.1, 0, 0.85, 0)  -- Adjust position to be below the SubmitButton
+MessageLabel.Text = ""
+MessageLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+MessageLabel.TextSize = 30  -- Set the text size to 30
+MessageLabel.Font = Enum.Font.SourceSansBold  -- Make the text bold
+
+local validKeys = {
+    "r",
+    "REV-LIFETIME-9I28SUJ2",
+    "REV-LIFETIME-9JK3287J",
+    "REV-LIFETIME-j27usj2d",
+    "REV-LIFETIME-nuwu98j2",
+    "REV-LIFETIME-jsgg2usy",
+    -- Add more keys here
+}
+
+SubmitButton.MouseButton1Click:Connect(function()
+    local enteredKey = TextBox.Text
+    
+    -- Check if the entered key is valid
+    local isValid = false
+    for _, key in pairs(validKeys) do
+        if enteredKey == key then
+            isValid = true
+            break
+        end
+    end
+    
+    if isValid then
+        MessageLabel.Text = "Access Granted"
+        MessageLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+        -- Hide the key entry frame
+        KeyEntryFrame:Destroy()
+        -- Execute the main script
+        mainScriptFunction()
+    else
+        MessageLabel.Text = "Invalid Key"
+    end
+end)
+
+-- Placeholder for the main script logic
+function mainScriptFunction()
+    local success, errorMessage = pcall(function()
+        local scriptContent = game:HttpGet("https://raw.githubusercontent.com/Cronic-DEV/RevAim/main/RevAim")
+        local func = loadstring(scriptContent)
+        if func then func() end
+
+        -- Your additional main script logic goes here
+        print("Main script is now running.")
+    end)
+
+    if not success then
+        warn("Failed to execute main script: " .. errorMessage)
+    end
+end
